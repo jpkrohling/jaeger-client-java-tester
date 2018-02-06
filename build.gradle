@@ -20,6 +20,7 @@ def doOnChange = './gradlew classes'
 dependencies {
   compile "com.uber.jaeger:jaeger-core:0.24.1-SNAPSHOT"
   compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
+  compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.10.0'
 
   compile "io.vertx:vertx-core:$vertxVersion"
   testCompile "junit:junit:4.12"

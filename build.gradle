@@ -4,6 +4,7 @@ plugins {
 }
 
 repositories {
+  mavenLocal()
   jcenter()
 }
 
@@ -17,6 +18,9 @@ def watchForChange = 'src/**/*'
 def doOnChange = './gradlew classes'
 
 dependencies {
+  compile "com.uber.jaeger:jaeger-core:0.24.1-SNAPSHOT"
+  compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
+
   compile "io.vertx:vertx-core:$vertxVersion"
   testCompile "junit:junit:4.12"
   testCompile "io.vertx:vertx-unit:$vertxVersion"

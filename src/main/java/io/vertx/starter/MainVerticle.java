@@ -1,8 +1,7 @@
 package io.vertx.starter;
 
 import com.uber.jaeger.Configuration;
-import com.uber.jaeger.metrics.MicrometerStatsReporter;
-import io.micrometer.core.instrument.MeterRegistry;
+import com.uber.jaeger.micrometer.MicrometerStatsReporter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;

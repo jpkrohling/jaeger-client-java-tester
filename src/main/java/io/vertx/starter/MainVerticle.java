@@ -2,6 +2,7 @@ package io.vertx.starter;
 
 import com.uber.jaeger.Configuration;
 import com.uber.jaeger.micrometer.MicrometerMetricsFactory;
+import com.uber.jaeger.samplers.ConstSampler;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
@@ -17,10 +18,6 @@ public class MainVerticle extends AbstractVerticle {
   private static final Logger logger = LoggerFactory.getLogger(MainVerticle.class);
 
   public static void main(String[] args) {
-      System.setProperty("JAEGER_SERVICE_NAME", "jaeger-client-java-tester");
-      System.setProperty("JAEGER_REPORTER_LOG_SPANS", "true");
-      System.setProperty("JAEGER_SAMPLER_TYPE", "const");
-      System.setProperty("JAEGER_SAMPLER_PARAM", "1");
       Vertx vertx = Vertx.vertx();
       vertx.deployVerticle(new MainVerticle());
   }
@@ -28,8 +25,17 @@ public class MainVerticle extends AbstractVerticle {
   @Override
   public void start() {
     MicrometerMetricsFactory metricsReporter = new MicrometerMetricsFactory();
-    Configuration configuration = Configuration.fromEnv();
+    Configuration configuration = new Configuration("jaeger-client-java-tester");
     Tracer tracer = configuration
+        .withReporter(
+            new Configuration.ReporterConfiguration()
+                .withLogSpans(true)
+        )
+        .withSampler(
+            new Configuration.SamplerConfiguration()
+                .withType(ConstSampler.TYPE)
+                .withParam(1)
+        )
         .getTracerBuilder()
         .withMetricsFactory(metricsReporter)
         .build();

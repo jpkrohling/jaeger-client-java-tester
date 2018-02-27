@@ -1,7 +1,7 @@
 package io.vertx.starter;
 
 import com.uber.jaeger.Configuration;
-import com.uber.jaeger.micrometer.MicrometerStatsFactory;
+import com.uber.jaeger.micrometer.MicrometerMetricsFactory;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
@@ -27,7 +27,7 @@ public class MainVerticle extends AbstractVerticle {
 
   @Override
   public void start() {
-    MicrometerStatsFactory metricsReporter = new MicrometerStatsFactory();
+    MicrometerMetricsFactory metricsReporter = new MicrometerMetricsFactory();
     Configuration configuration = Configuration.fromEnv();
     Tracer tracer = configuration
         .getTracerBuilder()

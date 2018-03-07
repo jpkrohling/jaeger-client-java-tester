@@ -18,8 +18,8 @@ def watchForChange = 'src/**/*'
 def doOnChange = './gradlew classes'
 
 dependencies {
-  compile "com.uber.jaeger:jaeger-core:0.24.1-SNAPSHOT"
-  compile "com.uber.jaeger:jaeger-micrometer:0.24.1-SNAPSHOT"
+  compile "com.uber.jaeger:jaeger-core:0.25.0"
+  compile "com.uber.jaeger:jaeger-micrometer:0.25.0"
   compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
   compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.10.0'
 

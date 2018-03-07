@@ -8,14 +8,10 @@ import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import io.opentracing.util.GlobalTracer;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MainVerticle extends AbstractVerticle {
-  private static final Logger logger = LoggerFactory.getLogger(MainVerticle.class);
 
   public static void main(String[] args) {
       Vertx vertx = Vertx.vertx();
@@ -24,7 +20,7 @@ public class MainVerticle extends AbstractVerticle {
 
   @Override
   public void start() {
-    MicrometerMetricsFactory metricsReporter = new MicrometerMetricsFactory();
+    MicrometerMetricsFactory metricsFactory = new MicrometerMetricsFactory();
     Configuration configuration = new Configuration("jaeger-client-java-tester");
     Tracer tracer = configuration
         .withReporter(
@@ -37,15 +33,12 @@ public class MainVerticle extends AbstractVerticle {
                 .withParam(1)
         )
         .getTracerBuilder()
-        .withMetricsFactory(metricsReporter)
+        .withMetricsFactory(metricsFactory)
         .build();
-
-    GlobalTracer.register(tracer);
-    logger.warn("Registered tracer: " + GlobalTracer.get().toString());
 
     vertx.createHttpServer()
         .requestHandler(req -> {
-          Span span = GlobalTracer.get().buildSpan("new-request").start();
+          Span span = tracer.buildSpan("new-request").start();
           req.response().end("Hello Vert.x!");
           span.finish();
         })
